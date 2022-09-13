@@ -1,0 +1,31 @@
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: "websec"
+          scheme: "https"
+  websec:
+    address: ":443"
+
+log:
+  level: DEBUG
+
+api:
+  dashboard: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: linuxwolf@outer-planes.net
+      storage: /app/certs/acme.json
+      dnsChallenge:
+        provider: digitalocean
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: public
+    swarmMode: true
