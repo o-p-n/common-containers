@@ -8,6 +8,9 @@ ARG TARGETVARIANT
 # caddy @ v2.5.2
 COPY --from=caddy@sha256:c2aa034bd91237e02c80e030f1366fe0e20c88dfc6b9eac5c3cfefdc447b7bc9 /usr/bin/caddy /bin/caddy
 COPY Caddyfile /app/Caddyfile
+
 WORKDIR /app
+
+EXPOSE 80/tcp
 
 CMD [ "caddy", "run" ]
