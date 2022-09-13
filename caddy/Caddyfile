@@ -3,4 +3,5 @@
 	file_server {
 		index index.html
 	}
+	log
 }
