@@ -1,5 +1,5 @@
 DOCKER_REGISTRY?=localhost:5000
-STAMP?=$(shell date -u "+%Y%m%d%H%M%S")
+STAMP?=$(shell git rev-parse --verify HEAD)
 
 DOCKER_BUILDER=container-builder
 
@@ -12,7 +12,7 @@ help:
 	@echo  ""
 	@echo "configurable properties:"
 	@echo "  - DOCKER_REGISTRY ................ Container registry to push/pull (default: 'localhost:5000')"
-	@echo "  - STAMP  ......................... Stamp for image tags (default: current date/time)"
+	@echo "  - STAMP  ......................... Stamp for image tags (default: current commit hash)"
 
 all: linuxwolf/busybox linuxwolf/caddy linuxwolf/traefik
 
@@ -42,5 +42,6 @@ linuxwolf/%: .cache/docker init-builder %/Dockerfile
 		--platform linux/amd64,linux/arm64 \
 		--tag $(DOCKER_REGISTRY)/$@:$(IMAGE_TAG) \
 		--build-arg DOCKER_REGISTRY=$(DOCKER_REGISTRY) \
+		--build-arg STAMP=$(STAMP) \
 		-f $(BASENAME)/Dockerfile \
 		$(BASENAME)
