@@ -15,4 +15,8 @@ COPY traefik.yaml /app/traefik.yaml
 
 WORKDIR /app
 
+EXPOSE 80/tcp
+EXPOSE 80/udp
+EXPOSE 443/udp
+
 CMD [ "/bin/traefik" ]
