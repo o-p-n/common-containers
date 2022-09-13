@@ -2,7 +2,7 @@ DOCKER_BUILDER=container-builder
 DOCKER_REGISTRY?=localhost:5000
 
 .PHONY: all init-builder
-all: linuxwolf/busybox
+all: linuxwolf/busybox linuxwolf/caddy
 
 init-builder:
 	./.builder/init-builder
@@ -12,6 +12,10 @@ init-builder:
 
 # busybox -- base
 linuxwolf/busybox:	IMAGE_TAG = 1.34.1.20220912203138
+
+# caddy -- webserver base
+linuxwolf/caddy: IMAGE_TAG = 2.5.2.20220912203138
+linuxwolf/caddy: linuxwolf/busybox
 
 linuxwolf/%: BASENAME=$(shell basename $@)
 linuxwolf/%: .cache/docker init-builder %/Dockerfile

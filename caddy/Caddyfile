@@ -1,0 +1,6 @@
+*:80 {
+	root * /app/web
+	file_server {
+		index index.html
+	}
+}
