@@ -1,7 +1,19 @@
-DOCKER_BUILDER=container-builder
 DOCKER_REGISTRY?=localhost:5000
+STAMP?=$(shell date -u "+%Y%m%d%H%M%S")
 
-.PHONY: all init-builder
+DOCKER_BUILDER=container-builder
+
+.PHONY: help all init-builder
+help:
+	@echo "* all .............................. build all images"
+	@echo "* linuxwolf/busybox ................ build BusyBox base image"
+	@echo "* linuxwolf/caddy .................. build Caddy webserver image"
+	@echo "* linuxwolf/traefik ................ build Traefik load-balancer/ingress image"
+	@echo  ""
+	@echo "configurable properties:"
+	@echo "  - DOCKER_REGISTRY ................ Container registry to push/pull (default: 'localhost:5000')"
+	@echo "  - STAMP  ......................... Stamp for image tags (default: current date/time)"
+
 all: linuxwolf/busybox linuxwolf/caddy linuxwolf/traefik
 
 init-builder:
@@ -11,14 +23,14 @@ init-builder:
 	mkdir -p .cache/docker
 
 # busybox -- base
-linuxwolf/busybox:	IMAGE_TAG = 1.34.1.20220912203138
+linuxwolf/busybox:	IMAGE_TAG = 1.34.1.$(STAMP)
 
 # caddy -- webserver base
-linuxwolf/caddy: IMAGE_TAG = 2.5.2.20220912203138
+linuxwolf/caddy: IMAGE_TAG = 2.5.2.$(STAMP)
 linuxwolf/caddy: linuxwolf/busybox
 
 # traefik -- load-balancer base
-linuxwolf/traefik: IMAGE_TAG = 2.8.1.20220912203138
+linuxwolf/traefik: IMAGE_TAG = 2.8.1.$(STAMP)
 linuxwolf/traefik: linuxwolf/busybox
 
 linuxwolf/%: BASENAME=$(shell basename $@)

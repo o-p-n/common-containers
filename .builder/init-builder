@@ -8,7 +8,14 @@ REGISTRY_NAME=${DOCKER_REGISTRY_REPO:-registry}
 REGISTRY_IMAGE=${DOCKER_REGISTRY_IMAGE:-registry:2}
 REGISTRY_PORT=${DOCKER_REGISTRY_PORT:-5000}
 
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-localhost:$REGISTRY_PORT}
+
 function check_registry() {
+  if [[ "${DOCKER_REGISTRY}" != "localhost:${REGISTRY_PORT}" ]] ; then
+    echo "0"
+    return
+  fi
+
   local result=$(docker ps -aq -f "name=${REGISTRY_NAME}")
   if [[ "${result}" == "" ]] ; then
     echo "1"
